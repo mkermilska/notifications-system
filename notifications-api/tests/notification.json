@@ -1,0 +1,10 @@
+{
+    "message": "Hello this is my notification system",
+    "email": {
+        "to": "kermilska@gmail.com",
+        "subject": "test email"
+    },
+    "sms": {
+        "phone": "+398935911"
+    }
+}

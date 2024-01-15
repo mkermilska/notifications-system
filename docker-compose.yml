@@ -1,0 +1,57 @@
+version: "3.9"
+services:
+  notification-sender-email:
+    build:
+      dockerfile: Dockerfile
+      context: ./notifications-sender
+    environment:
+      EMAIL_ENABLED: true
+      NATS_HOST: nats
+      SMS_API_KEY: 2bbd2cd6
+      SMS_API_SECRET: XyOdkc4EPmpSPICC
+      EMAIL_API_KEY: 73810cf20fc3b731a42ba274e56ecbbc-7ecaf6b5-84aa8720
+      EMAIL_DOMAIN: sandbox526f83b07a964bea9f8af7f5da7f3721.mailgun.org
+    depends_on:
+      - nats
+      - mariadb
+  
+  notification-sender-sms:
+    build:
+      dockerfile: Dockerfile
+      context: ./notifications-sender
+    environment:
+      SMS_ENABLED: true
+      NATS_HOST: nats
+      SMS_API_KEY: 2bbd2cd6
+      SMS_API_SECRET: XyOdkc4EPmpSPICC
+      EMAIL_API_KEY: 73810cf20fc3b731a42ba274e56ecbbc-7ecaf6b5-84aa8720
+      EMAIL_DOMAIN: sandbox526f83b07a964bea9f8af7f5da7f3721.mailgun.org
+    depends_on:
+      - nats
+      - mariadb
+
+  notification-api:
+    build:
+      dockerfile: Dockerfile
+      context: ./notifications-api
+    environment:
+      HTTP_PORT: 59191
+      NATS_HOST: nats
+    ports:
+      - "59191:59191"
+    depends_on:
+      - nats
+
+  nats:
+    image: "nats:2.9"
+    command: [ "-js" ]
+    ports:
+      - "4222:4222"
+
+  mariadb:
+    image: "mariadb:10.6"
+    environment:
+      MARIADB_DATABASE: test
+      MARIADB_ROOT_PASSWORD: test
+    ports:
+      - "3306:3306"

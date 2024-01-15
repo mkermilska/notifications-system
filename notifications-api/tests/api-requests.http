@@ -1,0 +1,13 @@
+## POST valid notification
+POST http://localhost:59191/v1/notifications
+content-type: application/json
+
+<@ ./notification.json
+
+
+### POST valid notification
+POST http://localhost:59191/v1/notifications
+content-type: application/json
+
+<@ ./notification_invalid.json
+
